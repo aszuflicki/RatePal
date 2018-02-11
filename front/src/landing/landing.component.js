@@ -7,18 +7,18 @@ class Landing extends Component {
 
         return (
             <div className="container">
-                <div class="jumbotron">
-                    <h1 class="display-4">Hi, there!</h1>
-                    <p class="lead">This is a simple web app.</p>
+                <div className="jumbotron">
+                    <h1 className="display-4">Hi, there!</h1>
+                    <p className="lead">This is a simple web app.</p>
 
                 </div>
 
-                <div class="jumbotron">
-                    <h1 class="display-4">Don't have an account?</h1>
-                    <p class="lead">Register, by clicking button below</p>
+                <div className="jumbotron">
+                    <h1 className="display-4">Don't have an account?</h1>
+                    <p className="lead">Register, by clicking button below</p>
 
-                    <p class="lead">
-                        <a class="btn btn-danger btn-lg" role="button"
+                    <p className="lead">
+                        <a className="btn btn-danger btn-lg" role="button"
                         onClick={()=>{
                             this.props.history.push("/register")
                         }}
@@ -30,8 +30,6 @@ class Landing extends Component {
     }
 }
 
-function mapStateToProps(state) {
 
-}
 
-export default connect(mapStateToProps, {})(Landing);
+export default connect(null, {})(Landing);
