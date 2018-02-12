@@ -13,3 +13,12 @@ export function fetchUsers() {
     }
 
 }
+
+export const SELECT_USER = "SELECT_USER";
+export function selectUser(username) {
+
+    return {
+        type: SELECT_USER,
+        payload: username
+    }
+}
