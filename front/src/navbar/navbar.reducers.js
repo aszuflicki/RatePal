@@ -1,6 +1,5 @@
-import { LOG_IN, UPDATE_LOGIN_FIELD, SET_USER, LOG_IN_FAIL, LOG_IN_SUCCESS, LOG_OUT } from "./navabr.actions"
+import { LOG_IN, UPDATE_LOGIN_FIELD, SET_USER, LOG_IN_FAIL, LOG_IN_SUCCESS, LOG_OUT, LOG_IN_REQUEST } from "./navabr.actions"
 import decode from 'jwt-decode';
-
 const initial = { field: "", username: "", fullName: "", loggedIn: false, token: "" }
 
 export default function (state = initial, action) {
@@ -13,8 +12,15 @@ export default function (state = initial, action) {
             console.log("hej")
             return { ...state, ...action.payload.data, ...decode(action.payload.data.token) }
         case LOG_IN:
-            console.log("hej")
+            if (action.payload.data.token) {
+                localStorage.setItem("jwt", action.payload.data.token);
+                return { ...state, ...action.payload.data, ...decode(action.payload.data.token) }
+            }
             return { ...state, ...action.payload.data }
+
+        case LOG_IN_REQUEST:
+            console.log("hej")
+            return { ...state }
 
         case UPDATE_LOGIN_FIELD:
             return { ...state, field: action.payload }

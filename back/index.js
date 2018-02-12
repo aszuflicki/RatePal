@@ -3,6 +3,7 @@ const path = require('path');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+
 const PORT = process.env.PORT || 5000;
 
 const secret = "xd lol jwt, really?"
@@ -30,7 +31,7 @@ app.post('/api/login', function (req, res) {
                     username, fullName
                 }, secret);
 
-                res.json({ token, loggedIn: true, msg: "You successfully logged in"})
+                res.json({ token, loggedIn: true, msg: "You successfully logged in" })
             }
         })
         .catch(error => {
@@ -66,33 +67,80 @@ app.post('/api/register', function (req, res) {
 });
 
 function authenticate(req, res, next) {
-    const header = req.header["authorization"];
+    const header = req.headers["authorization"];
 
     let token;
 
-    if(header) {
-        token = header.split(".")[1];
+    if (header) {
+        token = header.split(" ")[1];
     } else {
-        req.json({msg:"You have to log into see this page"})
+        res.json({ msg: "You have to log into see this page" })
     }
 
-    if(token) {
-        jwt.verify(token, secret, (err, decoded)=> {
-            axios.get(`https://api.mlab.com/api/1/databases/heroku_ln01q8pk/collections/users?apiKey=vQ6yZUKnByCrkZV3zlCbUQPgFOG8T72B`)
-            .then(() =>{
-                if (response.data.length != 0) {
-                res.json({ msg: "", users:response.data })
+    if (token) {
+        jwt.verify(token, secret, (err, decoded) => {
+            // console.log(err)
+            // console.log(decoded)
+            if(err) {
+                res.json({msg:"Failed to authenticate"})
             } else {
-                res.json({ msg: "Error!", users: [] })
+                next()
             }
-            })
-            
-    }
+        })
 
+    } else {
+        res.json({ msg: "You have to log in to see this page" })
+    }
 }
 
 app.get("/api/users", authenticate, (req, res) => {
 
+    axios.get(`https://api.mlab.com/api/1/databases/heroku_ln01q8pk/collections/users?apiKey=vQ6yZUKnByCrkZV3zlCbUQPgFOG8T72B`)
+        .then((response) => {
+            if (response.data.length != 0) {
+                res.json({ msg: "", users: response.data })
+            } else {
+                res.json({ msg: "Error!", users: [] })
+            }
+        })
+
+})
+
+app.get("/api/skills/:username", authenticate, (req,res) => {
+    axios.get(`https://api.mlab.com/api/1/databases/heroku_ln01q8pk/collections/skills_${req.params.username}?apiKey=vQ6yZUKnByCrkZV3zlCbUQPgFOG8T72B`)
+    .then((response) => {
+        let {length} = response.data;
+        if (length != 0) {
+           
+            res.json({ msg: "", skills: response.data,  })
+        } else {
+            res.json({ msg: "No skills!", skills: [] })
+        }
+    })
+})
+
+app.post("/api/skills", authenticate, (req, res) => {
+    const token = req.headers["authorization"].split(" ")[1];
+    const decoded = jwt.verify(token, secret, (err, decoded) => decoded);
+    console.log(req.body)
+
+    axios.post(`https://api.mlab.com/api/1/databases/heroku_ln01q8pk/collections/skills_${decoded.username}?apiKey=vQ6yZUKnByCrkZV3zlCbUQPgFOG8T72B`,
+    req.body)
+    .then((response) => res.json(response.data))
+
+    
+})
+
+app.delete("/api/skills/:id", authenticate, (req, res) => {
+    const token = req.headers["authorization"].split(" ")[1];
+    const decoded = jwt.verify(token, secret, (err, decoded) => decoded);
+    console.log(req.body);
+
+    axios.delete(`https://api.mlab.com/api/1/databases/heroku_ln01q8pk/collections/skills_${decoded.username}/${req.params.id}?apiKey=vQ6yZUKnByCrkZV3zlCbUQPgFOG8T72B`,
+    req.body)
+    .then((response) => res.json(response.data))
+
+    
 })
 
 app.get('/api', function (req, res) {

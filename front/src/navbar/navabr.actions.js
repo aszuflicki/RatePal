@@ -19,15 +19,14 @@ export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_FAIL = "LOG_IN_FAIL";
 export const LOG_IN = "LOG_IN";
 
+export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
+
+
 export function login(values) {
-
-
 
     let username = "", fullName = "", token = "", loggedIn = false;
 
     const request = instance.post(`/login`, values)
-        
-
 
     return {
         payload: request,
@@ -38,12 +37,12 @@ export function login(values) {
 }
 export const LOG_OUT = "LOG_OUT";
 export function logout() {
-        return {
-            type: LOG_OUT
-        }
-    
-    
+    return {
+        type: LOG_OUT
     }
+
+
+}
 
 export const UPDATE_LOGIN_FIELD = "UPDATE_LOGIN_FIELD"
 export function updateLoginField(value) {

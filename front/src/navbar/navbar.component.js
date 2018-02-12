@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { login, updateLoginField, logout } from "./navabr.actions";
+import {bindActionCreators} from 'redux';
 
 class Navbar extends Component {
 
@@ -42,7 +43,7 @@ class Navbar extends Component {
         } else {
             navEl = (
                 <span className="navbar-text">
-                    Hi! {this.props.fullName}
+                    {`Hi! ${this.props.fullName}`}
 
                     <button type="button" class="btn btn-outline-danger my-2 my-sm-0"
                     onClick={this.logout.bind(this)}
@@ -98,11 +99,13 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        login: (values) => dispatch(login(values)),
-        updateLoginField: (value) => dispatch(updateLoginField(value)),
-        logout:() => dispatch(logout())
-    }
+    // return {
+    //     login: (values) => dispatch(login(values)),
+    //     updateLoginField: (value) => dispatch(updateLoginField(value)),
+    //     logout:() => dispatch(logout())
+    // }
+
+    return bindActionCreators({login, updateLoginField, logout}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
