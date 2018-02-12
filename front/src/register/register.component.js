@@ -7,7 +7,7 @@ class Register extends Component {
 
 
     submit(e) {
-        //console.log(e)
+        // (e)
         if (e) e.preventDefault();
         //alert("works")
         const { fullName, username } = this.props;
@@ -86,7 +86,7 @@ class Register extends Component {
     }
 }
 function mapStateToProps(state) {
-    //console.log(state.register)
+    // (state.register)
     return {
         ...state.register
     }

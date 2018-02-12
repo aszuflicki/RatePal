@@ -39,7 +39,7 @@ export const DELETE_SKILL = "DELETE_SKILL";
 export function deleteSkill(id, callback) {
     setAuthToken(localStorage.jwt);
 
-    console.log(id)
+     (id)
     const request = instance.delete(`/skills/${id}`)
         .then(() => callback())
     return {

@@ -8,15 +8,14 @@ class Profile extends Component {
     render() {
         if (this.state) {
             if (this.state.navbar) {
-                console.log(this.state.navbar)
+                 (this.state.navbar)
             }
         }
 
 
         return (
             <div className="container">
-                 <SkillsEdit />
-                
+                 
                 <div class="jumbotron">
                     <h1 class="display-4">My profile</h1>
                     <hr class="my-4" />
@@ -24,6 +23,9 @@ class Profile extends Component {
                     <p>{`Username: ${this.props.username}`}</p>
 
                 </div>
+                
+                <SkillsEdit />
+                
             </div>
         )
     }

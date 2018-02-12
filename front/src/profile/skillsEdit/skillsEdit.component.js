@@ -37,7 +37,7 @@ class SkillsEdit extends Component {
                             <td>
                                 <button type="button" class="btn btn-danger"
                                 onClick={() => {
-                                    console.log(skill._id.$oid)
+                                     (skill._id.$oid)
                                     this.props.deleteSkill(skill._id.$oid, this.props.fetchSkills(this.props.username))
                                 
                                 }}
@@ -54,7 +54,7 @@ class SkillsEdit extends Component {
 
 
     render() {
-        console.log(this.props)
+         (this.props)
         return (
             <div>
                 <div class="jumbotron">
@@ -89,7 +89,7 @@ class SkillsEdit extends Component {
 }
 
 function mapStateToProps(state) {
-    //console.log(state.skillsEdit);
+    // (state.skillsEdit);
     return {
         ...state.skillsEdit,
         username: state.navbar.username

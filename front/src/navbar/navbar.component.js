@@ -23,6 +23,15 @@ class Navbar extends Component {
         this.props.logout();
     }
 
+    renderAlert(msg) {
+        if(msg)
+        return (
+            <div class="alert alert-danger" role="alert">
+            {msg}
+        </div>
+        )
+    }
+
     render() {
 
 
@@ -53,7 +62,7 @@ class Navbar extends Component {
         }
 
         return (
-            <div>
+            <div style={{paddingBottom:"30px"}}>
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                     <Link to="/">
                         <div className="navbar-brand"
@@ -82,9 +91,8 @@ class Navbar extends Component {
 
                     </div>
                 </nav>
-                <div class="alert alert-danger" role="alert">
-                    {this.props.msg}
-                </div>
+                {this.renderAlert(this.props.msg)}
+                
             </div>
         )
     }

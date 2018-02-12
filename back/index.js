@@ -74,7 +74,7 @@ function authenticate(req, res, next) {
     if (header) {
         token = header.split(" ")[1];
     } else {
-        res.json({ msg: "You have to log into see this page" })
+        res.json({isAuth: false, msg: "You have to log into see this page" })
     }
 
     if (token) {
@@ -82,14 +82,14 @@ function authenticate(req, res, next) {
             // console.log(err)
             // console.log(decoded)
             if(err) {
-                res.json({msg:"Failed to authenticate"})
+                res.json({isAuth: false, msg:"Failed to authenticate"})
             } else {
                 next()
             }
         })
 
     } else {
-        res.json({ msg: "You have to log in to see this page" })
+        res.json({isAuth: false, msg: "You have to log in to see this page" })
     }
 }
 
@@ -143,8 +143,21 @@ app.delete("/api/skills/:id", authenticate, (req, res) => {
     
 })
 
-app.get('/api', function (req, res) {
-    res.json({ message: `Hello from the custom server!` });
+app.post("/api/rate", authenticate, (req, res) => {
+    const token = req.headers["authorization"].split(" ")[1];
+    const decoded = jwt.verify(token, secret, (err, decoded) => decoded);
+    console.log(req.body);
+    let data={};
+    data[decoded.username]=req.body.rate
+
+    axios.put(`https://api.mlab.com/api/1/databases/heroku_ln01q8pk/collections/skills_${req.body.user}/${req.body.id}?apiKey=vQ6yZUKnByCrkZV3zlCbUQPgFOG8T72B`,
+    { "$set" :data})
+    .then((response) => res.json(response.data))
+
+})
+
+app.get('/api',authenticate, function (req, res) {
+    res.json({ isAuth: true, msg:"Glad, You came back :)" });
 });
 
 // All remaining requests return the React app, so it can handle routing.

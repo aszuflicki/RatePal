@@ -19,7 +19,6 @@ export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_FAIL = "LOG_IN_FAIL";
 export const LOG_IN = "LOG_IN";
 
-export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 
 
 export function login(values) {
@@ -37,6 +36,9 @@ export function login(values) {
 }
 export const LOG_OUT = "LOG_OUT";
 export function logout() {
+
+    localStorage.removeItem("jwt")
+
     return {
         type: LOG_OUT
     }
@@ -49,5 +51,25 @@ export function updateLoginField(value) {
     return {
         payload: value,
         type: UPDATE_LOGIN_FIELD
+    }
+}
+
+export const CHECK_LOGIN = "CHECK_LOGIN";
+export function checkLogin() {
+    if (localStorage.jwt) {
+
+        return {
+            type: LOG_IN,
+            payload: {
+                data: {
+                    token: localStorage.jwt,
+                    loggedIn: true
+                }
+            }
+        }
+    } else {
+        return {
+            type: LOG_IN_FAIL
+        }
     }
 }

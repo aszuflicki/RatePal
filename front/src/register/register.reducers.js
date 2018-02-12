@@ -1,10 +1,10 @@
 import { CREATE_USER, UPDATE_FULLNAME_FIELD, UPDATE_USERNAME_FIELD, UPDATE_MSG_REGISTER } from './register.actions';
 
 export default function (state = { username: "", fullName: "", msg: "", created: false }, action) {
-    //console.log(action.payload)
+    // (action.payload)
     switch (action.type) {
         case CREATE_USER:
-            console.log(action.payload.data)
+             (action.payload.data)
             const { created, msg } = action.payload.data;
             return { ...state, msg, created };
 
